@@ -21,7 +21,7 @@ public class SensorData {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private UUID guid = UUID.randomUUID();
+    private String uuid = UUID.randomUUID().toString();
 
     @JsonProperty("S_ID")
     private Long sensorId;
