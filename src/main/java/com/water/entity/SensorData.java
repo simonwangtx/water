@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 /**
  * Created by guaguagua-mac on 7/15/17.
@@ -19,6 +20,8 @@ public class SensorData {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    private UUID guid = UUID.randomUUID();
 
     @JsonProperty("S_ID")
     private Long sensorId;
