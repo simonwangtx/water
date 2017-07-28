@@ -9,4 +9,7 @@ public class Global {
     public static int[] timeInterval = new int[]{
             5 * 60 * 1000, 15 * 60 * 1000, 60 * 60 * 1000
     };
+
+    public static boolean load = true;
+    public static boolean regular = false;
 }

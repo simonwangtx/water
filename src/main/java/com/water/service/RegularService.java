@@ -39,7 +39,8 @@ public class RegularService {
 
     @PostConstruct
     public void postConstruct() {
-        generateRegularData();
+        if (Global.regular)
+            generateRegularData();
     }
 
     private double getVelocity(double lastValue, double nowValue) {

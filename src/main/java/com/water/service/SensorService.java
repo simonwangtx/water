@@ -3,6 +3,7 @@ package com.water.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.water.entity.SensorData;
+import com.water.global.Global;
 import com.water.repository.SensorDataRepository;
 import com.water.utils.ComFuncs;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +34,12 @@ public class SensorService {
         this.sensorDataRepository = sensorDataRepository;
     }
 
-    @Scheduled(fixedRate = 300000)
+    @Scheduled(fixedRate = 900000)
     public void BindTaskMethod() {
-//        for (int i = 0; i < Global.sensorId.length; i++)
-//            getWebData(Global.sensorId[i]);
-        //getWebData(6010);
-//        List<SensorData> sensorDataList = sensorDataRepository.findBySensorId(6000L);
-//        for (SensorData sensorData: sensorDataList) {
-//            System.out.println(sensorData.toString());
-//        }
+        if (Global.load) {
+            for (int i = 0; i < Global.sensorId.length; i++)
+                getWebData(Global.sensorId[i]);
+        }
     }
     private List<SensorData> getFilteredData(List<SensorData> sensorDataList, Timestamp lastTime) {
         return sensorDataList.stream().filter(
