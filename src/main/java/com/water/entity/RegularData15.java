@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "regular_data_15")
-public class RegularData15 {
+public class RegularData15 extends RegularDataBase {
 
     public RegularData15(Long sensorId, Timestamp time, double valueRecord, double intensity) {
         this.sensorId = sensorId;

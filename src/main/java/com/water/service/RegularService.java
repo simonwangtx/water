@@ -1,6 +1,8 @@
 package com.water.service;
 
 import com.water.entity.RegularData;
+import com.water.entity.RegularData15;
+import com.water.entity.RegularData60;
 import com.water.entity.SensorData;
 import com.water.global.Global;
 import com.water.repository.RegularDataRepository;
@@ -49,13 +51,16 @@ public class RegularService {
     }
 
     private void generateRegularData() {
-        for (int t = 0; t < Global.timeInterval.length; t++) {
+        List<RegularData> regularDataList = new ArrayList<>();
+        List<RegularData15> regularData15List = new ArrayList<>();
+        List<RegularData60> regularData60List = new ArrayList<>();
+
+        for (int t = 1; t < Global.timeInterval.length; t++) {
             long timeInterval = Global.timeInterval[t];
             for (int i = 0; i < Global.sensorId.length; i++) {
                 List<SensorData> sensorDataList =
                         sensorDataRepository.findAllBySensorId((long) Global.sensorId[i]);
                 if (sensorDataList.isEmpty()) return;
-                List<RegularData> regularDataList = new ArrayList<>();
                 long startMilli = ComFuncs.getTimeMilli("2017-07-01 00:00:00");
                 Timestamp startStamp = new Timestamp(startMilli);
                 Timestamp endStamp = new Timestamp(startMilli + timeInterval);
@@ -72,12 +77,28 @@ public class RegularService {
                     }
                     if (sensorData.getTime().after(endStamp)) {
                         if (!blank) {
-                            regularDataList.add(new RegularData(sensorData.getSensorId(),
-                                    endStamp, valueRecord, getVelocity(lastValueRecord, valueRecord)));
+                            if (t == 0) {
+                                regularDataList.add(new RegularData(sensorData.getSensorId(),
+                                        endStamp, valueRecord, getVelocity(lastValueRecord, valueRecord)));
+                            } else if (t == 1) {
+                                regularData15List.add(new RegularData15(sensorData.getSensorId(),
+                                        endStamp, valueRecord, getVelocity(lastValueRecord, valueRecord)));
+                            } else if (t == 2) {
+                                regularData60List.add(new RegularData60(sensorData.getSensorId(),
+                                        endStamp, valueRecord, getVelocity(lastValueRecord, valueRecord)));
+                            }
                             lastValueRecord = valueRecord;
                         } else {
-                            regularDataList.add(new RegularData(sensorData.getSensorId(),
-                                    endStamp, valueRecord, 0));
+                            if (t == 0) {
+                                regularDataList.add(new RegularData(sensorData.getSensorId(),
+                                        endStamp, valueRecord, 0));
+                            } else if (t == 1) {
+                                regularData15List.add(new RegularData15(sensorData.getSensorId(),
+                                        endStamp, valueRecord, 0));
+                            } else if (t == 2) {
+                                regularData60List.add(new RegularData60(sensorData.getSensorId(),
+                                        endStamp, valueRecord, 0));
+                            }
                         }
                         startStamp = endStamp;
                         endStamp = new Timestamp(endStamp.getTime() + timeInterval);
@@ -91,7 +112,13 @@ public class RegularService {
                 ComFuncs.printLog(getClass(), "Time interval is : " + (int) (timeInterval / 60000));
                 ComFuncs.printLog(getClass(),
                         "Start inserting data from sensorId : " + Global.sensorId[i] + "...");
-                regularDataRepositoryList.get(t).save(regularDataList);
+                if (t == 0) {
+                    regularDataRepositoryList.get(t).save(regularDataList);
+                } else if (t == 1) {
+                    regularDataRepositoryList.get(t).save(regularData15List);
+                } else if (t == 2) {
+                    regularDataRepositoryList.get(t).save(regularData60List);
+                }
                 ComFuncs.printLog(getClass(), "Successfully finished!");
             }
         }
