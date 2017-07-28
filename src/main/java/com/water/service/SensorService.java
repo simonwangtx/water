@@ -24,26 +24,25 @@ import java.util.stream.Collectors;
 @Service
 public class SensorService {
 
-    @Autowired
-    SensorDataRepository sensorDataRepository;
-    List<SensorData> previousDataList = new ArrayList<>();
+    private final SensorDataRepository sensorDataRepository;
+    private List<SensorData> previousDataList = new ArrayList<>();
     private int n = 5;
-    private int[] sensorId = new int[] {
-            6000, 6010, 6020, 6030, 6040, 6050, 6060, 6070, 6080, 6100, 6110, 6120, 6130,
-            6140, 6150, 6160, 6170, 6190, 6306, 6500, 6520, 6610, 6630, 6650, 6690
-    };
 
-    @Scheduled(fixedRate = 900000)
-    public void BindTaskMethod() {
-        for (int i = 0; i < sensorId.length; i++)
-            getWebData(sensorId[i]);
-        //getWebData(6010);
+    @Autowired
+    public SensorService(SensorDataRepository sensorDataRepository) {
+        this.sensorDataRepository = sensorDataRepository;
     }
 
-//    public boolean isValid(List<SensorData> l1, int st1, int end1, List<SensorData> l2, int st2, int end2) {
-//        if (end1 - st1 + 1 + end2 -st2 + 1 !)
-//    }
-
+    @Scheduled(fixedRate = 300000)
+    public void BindTaskMethod() {
+//        for (int i = 0; i < Global.sensorId.length; i++)
+//            getWebData(Global.sensorId[i]);
+        //getWebData(6010);
+//        List<SensorData> sensorDataList = sensorDataRepository.findBySensorId(6000L);
+//        for (SensorData sensorData: sensorDataList) {
+//            System.out.println(sensorData.toString());
+//        }
+    }
     private List<SensorData> getFilteredData(List<SensorData> sensorDataList, Timestamp lastTime) {
         return sensorDataList.stream().filter(
                 sensorData -> sensorData.getTime().after(lastTime)).collect(Collectors.toList());
@@ -127,12 +126,16 @@ public class SensorService {
             sensorDataRepository.save(dataList.subList(0, dataList.size() - n / 2 - 1));
         } catch (IOException e) {
             e.printStackTrace();
-            ComFuncs.printError(e.toString());
+            ComFuncs.printError(getClass(), e.toString());
         }
 
         for (SensorData sensorData: dataList) {
-            System.out.println(sensorData.toString());
+            ComFuncs.printLog(getClass(), sensorData.toString());
         }
         dataList.clear();
+    }
+
+    public List<SensorData> findSensorDataBySensorId(Long SensorId) {
+        return sensorDataRepository.findAllBySensorId(SensorId);
     }
 }

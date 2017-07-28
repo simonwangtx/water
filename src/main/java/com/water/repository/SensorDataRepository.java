@@ -11,5 +11,8 @@ import java.util.List;
 
 public interface SensorDataRepository extends CrudRepository<SensorData, Long> {
 
-    List<SensorData> findBySensorId(Long sensorId);
+    List<SensorData> findAllBySensorId(Long sensorId);
+
+    List<SensorData> findAll();
+
 }
