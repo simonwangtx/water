@@ -55,7 +55,7 @@ public class RegularService {
         List<RegularData15> regularData15List = new ArrayList<>();
         List<RegularData60> regularData60List = new ArrayList<>();
 
-        for (int t = 1; t < Global.timeInterval.length; t++) {
+        for (int t = 0; t < 1; t++) {
             long timeInterval = Global.timeInterval[t];
             for (int i = 0; i < Global.sensorId.length; i++) {
                 List<SensorData> sensorDataList =

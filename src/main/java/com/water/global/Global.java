@@ -10,6 +10,6 @@ public class Global {
             5 * 60 * 1000, 15 * 60 * 1000, 60 * 60 * 1000
     };
 
-    public static boolean load = false;
-    public static boolean regular = true;
+    public static boolean load = true;
+    public static boolean regular = false;
 }
