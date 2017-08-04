@@ -71,7 +71,7 @@ public class RegularService {
                 List<SensorData> sensorDataList =
                         sensorDataRepository.findAllBySensorId((long) Global.sensorId[i]);
                 if (sensorDataList.isEmpty()) return;
-                long startMilli = ComFuncs.getTimeMilli("2017-07-01 00:00:00");
+                long startMilli = ComFuncs.getTimeMilli("2017-08-01 00:00:00");
                 Timestamp startStamp = new Timestamp(startMilli);
                 Timestamp endStamp = new Timestamp(startMilli + timeInterval);
                 double valueRecord = 0;
