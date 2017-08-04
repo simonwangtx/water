@@ -24,8 +24,15 @@ public class RegularService {
 
     private final SensorDataRepository sensorDataRepository;
 
-    private final List<CrudRepository> regularDataRepositoryList =
-            new ArrayList<>();
+    private final RegularDataRepository regularDataRepository;
+    private final RegularDataRepository15 regularDataRepository15;
+    private final RegularDataRepository60 regularDataRepository60;
+
+
+
+//    private final List<CrudRepository> regularDataRepositoryList =
+//            new ArrayList<>();
+
 
 
     @Autowired
@@ -34,9 +41,12 @@ public class RegularService {
                           RegularDataRepository15 regularDataRepository15,
                           RegularDataRepository60 regularDataRepository60) {
         this.sensorDataRepository = sensorDataRepository;
-        regularDataRepositoryList.add(regularDataRepository);
-        regularDataRepositoryList.add(regularDataRepository15);
-        regularDataRepositoryList.add(regularDataRepository60);
+        this.regularDataRepository = regularDataRepository;
+        this.regularDataRepository15 = regularDataRepository15;
+        this.regularDataRepository60 = regularDataRepository60;
+//        regularDataRepositoryList.add(regularDataRepository);
+//        regularDataRepositoryList.add(regularDataRepository15);
+//        regularDataRepositoryList.add(regularDataRepository60);
     }
 
     @PostConstruct
@@ -113,11 +123,14 @@ public class RegularService {
                 ComFuncs.printLog(getClass(),
                         "Start inserting data from sensorId : " + Global.sensorId[i] + "...");
                 if (t == 0) {
-                    regularDataRepositoryList.get(t).save(regularDataList);
+                    //regularDataRepositoryList.get(t).save(regularDataList);
+                    regularDataRepository.save(regularDataList);
                 } else if (t == 1) {
-                    regularDataRepositoryList.get(t).save(regularData15List);
+                    //regularDataRepositoryList.get(t).save(regularData15List);
+                    regularDataRepository15.save(regularData15List);
                 } else if (t == 2) {
-                    regularDataRepositoryList.get(t).save(regularData60List);
+                    //regularDataRepositoryList.get(t).save(regularData60List);
+                    regularDataRepository60.save(regularData60List);
                 }
                 ComFuncs.printLog(getClass(), "Successfully finished!");
             }

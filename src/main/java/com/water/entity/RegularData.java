@@ -11,6 +11,9 @@ import java.sql.Timestamp;
 @Table(name = "regular_data_5")
 public class RegularData extends RegularDataBase {
 
+    public RegularData() {
+    }
+
     public RegularData(Long sensorId, Timestamp time, double valueRecord, double intensity) {
         this.sensorId = sensorId;
         this.time = time;
