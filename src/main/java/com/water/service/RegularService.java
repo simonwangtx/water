@@ -11,7 +11,6 @@ import com.water.repository.RegularDataRepository60;
 import com.water.repository.SensorDataRepository;
 import com.water.utils.ComFuncs;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -80,6 +79,7 @@ public class RegularService {
                 int j = 0;
                 while (j < sensorDataList.size()) {
                     SensorData sensorData = sensorDataList.get(j);
+                    if (sensorData.getIsValid() == 0) continue;
                     if (sensorData.getTime().before(startStamp)) {
                         lastValueRecord = sensorData.getRainGage();
                         j++;
