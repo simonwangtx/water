@@ -79,7 +79,10 @@ public class RegularService {
                 int j = 0;
                 while (j < sensorDataList.size()) {
                     SensorData sensorData = sensorDataList.get(j);
-                    if (sensorData.getIsValid() == 0) continue;
+                    if (sensorData.getIsValid() == 0) {
+                        j++;
+                        continue;
+                    }
                     if (sensorData.getTime().before(startStamp)) {
                         lastValueRecord = sensorData.getRainGage();
                         j++;
