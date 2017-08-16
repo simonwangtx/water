@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>City of Grand Prairie Flood Alert System</title>
+    <script src='http://code.jquery.com/jquery-latest.min.js' type='text/javascript'></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <meta charset="utf-8"/>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+        * element that contains the map. */
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0%;
+            top: 0%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<h3>This is a demo.</h3>
+<div id="map"></div>
+<script>
+    /*<![CDATA[*/
+    var lastinfowindow;
+
+    function myCloseInfoWindow() {
+        if (lastinfowindow) lastinfowindow.close();
+    }
+
+    var icons = [{
+        path: 'M -5,-5 5,-5 5,5 -5,5 z',
+        fillColor: 'lightGreen',
+        fillOpacity: 0.8,
+        scale: 3,
+        strokeColor: 'transparent',
+        strokeWeight: 14
+    },
+        {
+            path: 'M -5,-5 5,-5 5,5 -5,5 z',
+            fillColor: 'red',
+            fillOpacity: 0.8,
+            scale: 3,
+            strokeColor: 'transparent',
+            strokeWeight: 14
+        }
+    ];
+    var contentString = '<div id="chart_div" onmouseleave = "myCloseInfoWindow()"></div>';
+
+    function getLabels() {
+        $.ajax({
+            url: "/Users/guaguagua-mac/Documents/water/src/main/resources/static/xml/labeldata.xml",
+            dataType: "xml",
+            success: function (data) {
+                var mark = $(data).find("markers");
+                var mkRecord = [];
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+                $(mark).find('label').each(function () {
+                    var marker = $(this);
+                    var Ltextcolor = marker.attr("textcolor");
+                    var Ltextcolorbg = marker.attr("textcolorbg");
+                    var Ldatavalue = marker.attr("datavalue");
+                    var Ltype = marker.attr("type");
+                    var Lpoint = new google.maps.LatLng(parseFloat(marker.attr("lat")), parseFloat(marker.attr("lng")));
+                    // var iconCat = CAT_ICONS[Ltype];
+                    var marker = new google.maps.Marker({
+                        position: Lpoint,
+                        label: Ldatavalue,
+                        icon: icons[0],
+                        title: 'City of Grand Prairie Flood Alert System'
+                    });
+                    var flag = true;
+                    for (var x = 0; x < 40; x++) {
+                        if (mkRecord[x] && mkRecord[x].equals(Lpoint)) {
+                            flag = false;
+                        }
+                    }
+                    if (flag) {
+                        marker.setMap(map);
+                        mkRecord.push(Lpoint);
+                        marker.addListener('click', function () {
+                            if (lastinfowindow) lastinfowindow.close();
+                            infowindow.open(map, marker);
+                            lastinfowindow = infowindow;
+                            google.charts.load('current', {packages: ['corechart', 'line']});
+                            google.charts.setOnLoadCallback(drawAxisTickColors);
+                            drawAxisTickColors();
+                        });
+                    }
+                    // mapData[Ltype]["markers"].push(marker)
+                    //marker.setMap(map);
+                    // var mapBubble = createDataValueBubble(Lpoint, Ltextcolor, Ltextcolorbg, Ldatavalue, Ltype);
+                    // mapData[Ltype]["infobubble"].push(mapBubble)
+                    // mapBubble.open(map, marker);
+                    console.log("Lpoint: " + Ldatavalue + ' ' + Lpoint);
+                });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //alert(errorThrown);
+            }
+        }).done(function () {
+        });
+    }
+
+    /******************************************************************/
+    function drawAxisTickColors() {
+
+        var chartDiv = document.getElementById('chart_div');
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Day');
+        data.addColumn('number', "Gauge");
+
+        data.addRows([
+            [new Date(2017, 4, 9, 23, 33), .29],
+            [new Date(2017, 4, 10, 1, 31), 19.44],
+            [new Date(2017, 4, 10, 11, 31), .28],
+            [new Date(2017, 4, 10, 23, 31), .32],
+            [new Date(2017, 4, 11, 11, 27), .28],
+            [new Date(2017, 4, 11, 19, 47), .33],
+            [new Date(2017, 4, 12, 12, 33), .34],
+            [new Date(2017, 4, 12, 12, 57), 7.2],
+            [new Date(2017, 4, 13, 0, 21), .3],
+            [new Date(2017, 4, 13, 12, 18), .35],
+            [new Date(2017, 4, 14, 0, 17), .32],
+            [new Date(2017, 4, 15, 0, 13), .28],
+            [new Date(2017, 4, 15, 12, 11), .28],
+            [new Date(2017, 4, 16, 0, 09), .29],
+            [new Date(2017, 4, 16, 12, 07), .28],
+            [new Date(2017, 4, 16, 14, 24), 14.46]
+
+        ]);
+
+        var classicOptions = {
+            title: 'Grand Praire Rain Gauge History',
+            width: 650,
+            height: 250,
+            curveType: 'function',
+            // Gives each series an axis that matches the vAxes number below.
+            series: {
+                0: {targetAxisIndex: 0},
+                1: {targetAxisIndex: 1}
+            },
+            vAxes: {
+                // Adds titles to each axis.
+                0: {title: 'Rain Gauge (ft)'},
+            },
+            hAxis: {
+                ticks: [new Date(2017, 4, 10), new Date(2017, 4, 12), new Date(2017, 4, 14), new Date(2017, 4, 16)]
+            },
+            vAxis: {
+                viewWindow: {
+                    min: -1,
+                    max: 30
+                }
+            }
+        };
+
+        function drawClassicChart() {
+            var classicChart = new google.visualization.LineChart(chartDiv);
+            classicChart.draw(data, classicOptions);
+        }
+
+        //drawMaterialChart();
+        drawClassicChart();
+    }
+
+    /******************************************************************/
+
+    /**
+     * Adds a KMLLayer based on the URL passed. Clicking on a marker
+     * results in the balloon content being loaded into the right-hand div.
+     * @param {string} src A URL for a KML file.
+     */
+    function loadKmlLayer(src, map) {
+        var kmlLayer = new google.maps.KmlLayer(src, {
+            suppressInfoWindows: true,
+            preserveViewport: false,
+            map: map
+        });
+        google.maps.event.addListener(kmlLayer, 'click', function (event) {
+            var content = event.featureData.infoWindowHtml;
+            var testimonial = document.getElementById('capture');
+            testimonial.innerHTML = content;
+        });
+    }
+
+    var map;
+    var kml1 = 'MountainCreek.kml';
+    var kml2 = 'watchpoints.kml';
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 10,
+            center: new google.maps.LatLng(32.7229925, -97.1520926),
+            mapTypeId: 'roadmap'
+        });
+        getLabels();
+        var ctaLayer = new google.maps.KmlLayer({
+            url: 'http://35.197.9.193/CWC_watershed.kml',
+            map: map
+        });
+        var ctaLayer = new google.maps.KmlLayer({
+            url: 'http://35.197.9.193/FC_watershed.kml',
+            map: map
+        });
+        var ctaLayer = new google.maps.KmlLayer({
+            //    url: 'http://googlemaps.github.io/js-v2-samples/ggeoxml/cta.kml',
+            url: 'http://35.197.9.193/watchpoints.kml',
+            map: map
+        });
+        var ctaLayer = new google.maps.KmlLayer({
+            // url: 'http://googlemaps.github.io/js-v2-samples/ggeoxml/cta.kml',
+            url: 'http://35.197.9.193/MC_2.kml',
+            map: map
+        });
+    }
+
+    /*]]>*/
+</script>
+<script async="async" defer="defer"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDG5R3D3TXbWJKbAIa9nOUP5W2W25GtdSM&amp;callback=initMap">
+</script>
+</body>
+</html>
+

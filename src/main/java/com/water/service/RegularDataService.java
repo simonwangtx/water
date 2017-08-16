@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class RegularService {
+public class RegularDataService {
 
     private final SensorDataRepository sensorDataRepository;
 
@@ -35,10 +35,10 @@ public class RegularService {
 
 
     @Autowired
-    public RegularService(SensorDataRepository sensorDataRepository,
-                          RegularDataRepository regularDataRepository,
-                          RegularDataRepository15 regularDataRepository15,
-                          RegularDataRepository60 regularDataRepository60) {
+    public RegularDataService(SensorDataRepository sensorDataRepository,
+                              RegularDataRepository regularDataRepository,
+                              RegularDataRepository15 regularDataRepository15,
+                              RegularDataRepository60 regularDataRepository60) {
         this.sensorDataRepository = sensorDataRepository;
         this.regularDataRepository = regularDataRepository;
         this.regularDataRepository15 = regularDataRepository15;
@@ -138,5 +138,14 @@ public class RegularService {
                 ComFuncs.printLog(getClass(), "Successfully finished!");
             }
         }
+    }
+
+    public List<RegularData> findIntensityBySensorId(Long sensorId) {
+        List<RegularData> stringList = new ArrayList<>();
+        List<RegularData> regularDataList = regularDataRepository.findAllBySensorId(sensorId);
+//        for (RegularData regularData : sensorDataList) {
+//            stringList.add(regularData.getIntensity());
+//        }
+        return regularDataList;
     }
 }

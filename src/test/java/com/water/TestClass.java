@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -79,7 +78,7 @@ public class TestClass {
 //            dataList.clear();
         } catch (IOException e) {
             e.printStackTrace();
-            ComFuncs.printError(e.toString());
+            ComFuncs.printError(getClass(), e.toString());
         }
 
         for (SensorData sensorData: dataList) {

@@ -2,7 +2,7 @@ package com.water.controller;
 
 import com.water.entity.SensorData;
 import com.water.repository.SensorDataRepository;
-import com.water.service.SensorService;
+import com.water.service.SensorDataService;
 import com.water.utils.ComFuncs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ public class SensorController {
     private SensorDataRepository sensorDataRepository;
 
     @Autowired
-    private SensorService sensorService;
+    private SensorDataService sensorDataService;
 
     @GetMapping(path = "/test/add/{info}")
     public @ResponseBody String showInfo(@PathVariable String info) {
@@ -43,6 +43,6 @@ public class SensorController {
     public @ResponseBody
     List<SensorData> getSensorDataBySensorId(@PathVariable Long sensorId) {
         ComFuncs.printLog(getClass(), "In Controller getSensorDataBySensorId(" + sensorId + ")");
-        return sensorService.findSensorDataBySensorId(sensorId);
+        return sensorDataService.findSensorDataBySensorId(sensorId);
     }
 }

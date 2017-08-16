@@ -23,14 +23,14 @@ import java.util.stream.Collectors;
  */
 
 @Service
-public class SensorService {
+public class SensorDataService {
 
     private final SensorDataRepository sensorDataRepository;
     private List<SensorData> previousDataList = new ArrayList<>();
     private int n = 5;
 
     @Autowired
-    public SensorService(SensorDataRepository sensorDataRepository) {
+    public SensorDataService(SensorDataRepository sensorDataRepository) {
         this.sensorDataRepository = sensorDataRepository;
     }
 
