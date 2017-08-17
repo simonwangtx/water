@@ -1,0 +1,84 @@
+{
+  "sensorList": [
+    {
+      "id": 1,
+      "sensorId": 6000,
+      "rainGage": 1.0,
+      "address": "Public Works Rain",
+      "lon": -97.022507,
+      "lat": 32.719444
+    },
+    {
+      "id": 2,
+      "sensorId": 6010,
+      "rainGage": 2.0,
+      "address": "Dry Branch @ Thousand Oaks (464.71)",
+      "lon": -96.99472,
+      "lat": 32.8125
+    },
+    {
+      "id": 3,
+      "sensorId": 6020,
+      "rainGage": 3.0,
+      "address": "Bear Ck @ Trinity",
+      "lon": -97.006668,
+      "lat": 32.797779
+    },
+    {
+      "id": 4,
+      "sensorId": 6030,
+      "rainGage": 4.0,
+      "address": "Johnson Ck @ Ave J (510.91)",
+      "lon": -97.062782,
+      "lat": 32.763332
+    },
+    {
+      "id": 5,
+      "sensorId": 6040,
+      "rainGage": 5.0,
+      "address": "Arbor Ck @ Tarrant (493.72)",
+      "lon": -97.034447,
+      "lat": 32.756943
+    },
+    {
+      "id": 6,
+      "sensorId": 6050,
+      "rainGage": 6.0,
+      "address": "Dalworth Ck @ Carrier (465.72)",
+      "lon": -97.017227,
+      "lat": 32.753613
+    },
+    {
+      "id": 7,
+      "sensorId": 6060,
+      "rainGage": 7.0,
+      "address": "Gopher Brnch @ Beltline (445.72)",
+      "lon": -96.994995,
+      "lat": 32.756111
+    },
+    {
+      "id": 8,
+      "sensorId": 6070,
+      "rainGage": 8.0,
+      "address": "Dorchester Levee Rain",
+      "lon": -97.013611,
+      "lat": 32.769444
+    },
+    {
+      "id": 9,
+      "sensorId": 6080,
+      "rainGage": 9.0,
+      "address": "N Fork Cttnwd @ GSWP (522.15)",
+      "lon": -97.043335,
+      "lat": 32.726391
+    },
+    {
+      "id": 10,
+      "sensorId": 6100,
+      "rainGage": 10.0,
+      "address": "Cottonwood Ck @ Beltline(469.0)",
+      "lon": -96.994438,
+      "lat": 32.731667
+    }
+  ]
+}

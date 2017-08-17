@@ -57,53 +57,79 @@
 
     function getLabels() {
         $.ajax({
-            url: "/Users/guaguagua-mac/Documents/water/src/main/resources/static/xml/labeldata.xml",
-            dataType: "xml",
+            url: "../static/xml/getHomeData.json",
+            dataType: "json",
             success: function (data) {
-                var mark = $(data).find("markers");
-                var mkRecord = [];
-                var infowindow = new google.maps.InfoWindow({
-                    content: contentString
-                });
-                $(mark).find('label').each(function () {
-                    var marker = $(this);
-                    var Ltextcolor = marker.attr("textcolor");
-                    var Ltextcolorbg = marker.attr("textcolorbg");
-                    var Ldatavalue = marker.attr("datavalue");
-                    var Ltype = marker.attr("type");
-                    var Lpoint = new google.maps.LatLng(parseFloat(marker.attr("lat")), parseFloat(marker.attr("lng")));
-                    // var iconCat = CAT_ICONS[Ltype];
+//                var mark = $(data).find("markers");
+//                var mkRecord = [];
+//                var infowindow = new google.maps.InfoWindow({
+//                    content: contentString
+//                });
+                var jsonData = data;
+                for (var i = 0; i < jsonData.sensorList.length; i++) {
+                    var sensor = jsonData.sensorList[i];
+                    console.log(sensor.sensorId);
+                    var Ldatavalue = sensor.rainGage.toString();
+                    var Lpoint = new google.maps.LatLng(parseFloat(sensor.lat), parseFloat(sensor.lon));
+                    var titile = sensor.address;
+                    var sensorId = sensor.sensorId;
+                    var url = "sensorId=" + sensorId.toString();
+
                     var marker = new google.maps.Marker({
                         position: Lpoint,
                         label: Ldatavalue,
                         icon: icons[0],
-                        title: 'City of Grand Prairie Flood Alert System'
+                        title: titile,
+                        url: url
                     });
-                    var flag = true;
-                    for (var x = 0; x < 40; x++) {
-                        if (mkRecord[x] && mkRecord[x].equals(Lpoint)) {
-                            flag = false;
-                        }
-                    }
-                    if (flag) {
-                        marker.setMap(map);
-                        mkRecord.push(Lpoint);
-                        marker.addListener('click', function () {
-                            if (lastinfowindow) lastinfowindow.close();
-                            infowindow.open(map, marker);
-                            lastinfowindow = infowindow;
-                            google.charts.load('current', {packages: ['corechart', 'line']});
-                            google.charts.setOnLoadCallback(drawAxisTickColors);
-                            drawAxisTickColors();
-                        });
-                    }
-                    // mapData[Ltype]["markers"].push(marker)
-                    //marker.setMap(map);
-                    // var mapBubble = createDataValueBubble(Lpoint, Ltextcolor, Ltextcolorbg, Ldatavalue, Ltype);
-                    // mapData[Ltype]["infobubble"].push(mapBubble)
-                    // mapBubble.open(map, marker);
-                    console.log("Lpoint: " + Ldatavalue + ' ' + Lpoint);
-                });
+
+                    marker.setMap(map);
+
+                    google.maps.event.addListener(marker, 'click', function () {
+                        window.open(url);
+                    });
+                }
+
+
+//                $(mark).find('label').each(function () {
+//                    var marker = $(this);
+//                    var Ltextcolor = marker.attr("textcolor");
+//                    var Ltextcolorbg = marker.attr("textcolorbg");
+//                    var Ldatavalue = marker.attr("datavalue");
+//                    var Ltype = marker.attr("type");
+//                    var Lpoint = new google.maps.LatLng(parseFloat(marker.attr("lat")), parseFloat(marker.attr("lng")));
+//                    // var iconCat = CAT_ICONS[Ltype];
+//                    var marker = new google.maps.Marker({
+//                        position: Lpoint,
+//                        label: Ldatavalue,
+//                        icon: icons[0],
+//                        title: 'City of Grand Prairie Flood Alert System'
+//                    });
+//                    var flag = true;
+//                    for (var x = 0; x < 40; x++) {
+//                        if (mkRecord[x] && mkRecord[x].equals(Lpoint)) {
+//                            flag = false;
+//                        }
+//                    }
+//                    if (flag) {
+//                        marker.setMap(map);
+//                        mkRecord.push(Lpoint);
+//                        marker.addListener('click', function () {
+//                            if (lastinfowindow) lastinfowindow.close();
+//                            infowindow.open(map, marker);
+//                            lastinfowindow = infowindow;
+//                            google.charts.load('current', {packages: ['corechart', 'line']});
+//                            google.charts.setOnLoadCallback(drawAxisTickColors);
+//                            drawAxisTickColors();
+//                        });
+//                    }
+//                    // mapData[Ltype]["markers"].push(marker)
+//                    //marker.setMap(map);
+//                    // var mapBubble = createDataValueBubble(Lpoint, Ltextcolor, Ltextcolorbg, Ldatavalue, Ltype);
+//                    // mapData[Ltype]["infobubble"].push(mapBubble)
+//                    // mapBubble.open(map, marker);
+//                    console.log("Lpoint: " + Ldatavalue + ' ' + Lpoint);
+//                });
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 //alert(errorThrown);

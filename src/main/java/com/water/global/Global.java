@@ -11,5 +11,5 @@ public class Global {
     };
 
     public static boolean load = false;
-    public static boolean regular = true;
+    public static boolean regular = false;
 }

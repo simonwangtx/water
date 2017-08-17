@@ -26,5 +26,51 @@ public class Sensor {
     Sensor() {
     }
 
-    ;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getSensorId() {
+        return sensorId;
+    }
+
+    public void setSensorId(Long sensorId) {
+        this.sensorId = sensorId;
+    }
+
+    public Double getRainGage() {
+        return rainGage;
+    }
+
+    public void setRainGage(Double rainGage) {
+        this.rainGage = rainGage;
+    }
+
+    public Double getLon() {
+        return Lon;
+    }
+
+    public void setLon(Double lon) {
+        Lon = lon;
+    }
+
+    public Double getLat() {
+        return Lat;
+    }
+
+    public void setLat(Double lat) {
+        Lat = lat;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }
